@@ -1,1 +1,0 @@
-Le fichier audio réel sera ajouté via Pages CMS dans media/audio/ lorsque l’hébergeur podcast sera choisi.
