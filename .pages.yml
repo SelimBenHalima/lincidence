@@ -1,0 +1,143 @@
+# L'Incidence — configuration Pages CMS
+
+media:
+  - name: images
+    label: Images
+    input: media/images
+    output: /media/images
+    extensions: [jpg, jpeg, png, webp, avif]
+    categories: [image]
+    rename: safe
+
+  - name: audio
+    label: Audio
+    input: media/audio
+    output: /media/audio
+    extensions: [mp3, m4a, wav, ogg]
+    categories: [audio]
+    rename: safe
+
+content:
+  - name: episodes
+    label: Épisodes
+    type: file
+    path: content/episodes.json
+    format: json
+    list: true
+
+    fields:
+      - name: slug
+        label: Identifiant URL
+        type: string
+        required: true
+        pattern: "^[a-z0-9-]+$"
+
+      - name: season
+        label: Saison
+        type: string
+        required: true
+
+      - name: number
+        label: Numéro
+        type: number
+        required: true
+
+      - name: title
+        label: Titre
+        type: string
+        required: true
+
+      - name: date
+        label: Date de publication
+        type: date
+        required: true
+
+      - name: duration
+        label: Durée
+        type: string
+
+      - name: summary
+        label: Résumé court
+        type: text
+        required: true
+
+      - name: image
+        label: Image de couverture
+        type: image
+        options:
+          media: images
+          path: episodes
+          extensions: [jpg, jpeg, png, webp, avif]
+
+      - name: audio
+        label: Fichier audio
+        type: file
+        options:
+          media: audio
+          path: episodes
+          extensions: [mp3, m4a, wav, ogg]
+          categories: [audio]
+
+      - name: description
+        label: À propos de cet épisode
+        type: rich-text
+        options:
+          format: markdown
+          media: images
+          path: episodes
+
+      - name: chapters
+        label: Chapitres
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{time} — {title}"
+        fields:
+          - name: time
+            label: Heure
+            type: string
+
+          - name: title
+            label: Titre
+            type: string
+
+      - name: sources
+        label: Pour aller plus loin
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{title}"
+        fields:
+          - name: title
+            label: Référence
+            type: string
+
+          - name: url
+            label: Lien
+            type: string
+
+  - name: site
+    label: Réglages du site
+    type: file
+    path: content/site.json
+    format: json
+
+    fields:
+      - name: title
+        label: Nom du site
+        type: string
+        readonly: true
+
+      - name: tagline
+        label: Signature
+        type: string
+        readonly: true
+
+settings:
+  commit:
+    templates:
+      create: "content: add {filename}"
+      update: "content: update {filename}"
+      delete: "content: remove {filename}"
